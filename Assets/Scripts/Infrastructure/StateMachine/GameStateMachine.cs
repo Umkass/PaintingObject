@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Infrastructure.Factory;
 using Infrastructure.Services;
 using UI;
 
@@ -14,11 +15,11 @@ namespace Infrastructure.StateMachine
         {
             _states = new Dictionary<Type, IState>
             {
-                [typeof(BootstrapState)]  = new BootstrapState(this, sceneLoader, services),
-                [typeof(GameState)] = new GameState(sceneLoader, loadingCurtain),
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
+                [typeof(GameState)] = new GameState(sceneLoader, loadingCurtain, services.Single<IGameFactory>()),
             };
         }
-    
+
         public void Enter<TState>() where TState : class, IDefaultState
         {
             IDefaultState state = ChangeState<TState>();
@@ -28,14 +29,14 @@ namespace Infrastructure.StateMachine
         private TState ChangeState<TState>() where TState : class, IState
         {
             _activeState?.Exit();
-      
+
             TState state = GetState<TState>();
             _activeState = state;
-      
+
             return state;
         }
 
-        private TState GetState<TState>() where TState : class, IState => 
+        private TState GetState<TState>() where TState : class, IState =>
             _states[typeof(TState)] as TState;
     }
 }

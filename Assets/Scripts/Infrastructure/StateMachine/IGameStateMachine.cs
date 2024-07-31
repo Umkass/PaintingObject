@@ -1,6 +1,8 @@
-﻿namespace Infrastructure.StateMachine
+﻿using Infrastructure.Services;
+
+namespace Infrastructure.StateMachine
 {
-    public interface IGameStateMachine
+    public interface IGameStateMachine :IService
     {
         void Enter<TState>() where TState : class, IDefaultState;
     }
