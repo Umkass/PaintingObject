@@ -1,6 +1,8 @@
 ﻿using Data;
 using Infrastructure.Services.AssetManagement;
 using Infrastructure.Services.InputService;
+using Infrastructure.Services.Progress;
+using Infrastructure.Services.SaveLoad;
 using Logic;
 using UI.HUD;
 using UnityEngine;
@@ -11,11 +13,16 @@ namespace Infrastructure.Factory
     {
         private readonly IAssetProvider _assetProvider;
         private readonly IInputService _inputService;
+        private readonly IProgressService _progressService;
+        private readonly ISaveLoadService _saveLoadService;
 
-        public GameFactory(IAssetProvider assetProvider, IInputService inputService)
+        public GameFactory(IInputService inputService, IAssetProvider assetProvider, IProgressService progressService,
+            ISaveLoadService saveLoadService)
         {
-            _assetProvider = assetProvider;
             _inputService = inputService;
+            _assetProvider = assetProvider;
+            _progressService = progressService;
+            _saveLoadService = saveLoadService;
         }
 
         public GameObject CreatePaintObject()
@@ -28,7 +35,7 @@ namespace Infrastructure.Factory
         {
             GameObject paintRayGo = _assetProvider.Instantiate(AssetAddress.PaintRayPath);
             PaintingBrushRay paintRay = paintRayGo.GetComponent<PaintingBrushRay>();
-            paintRay.Construct(_inputService, _assetProvider, paintObject);
+            paintRay.Construct(_inputService, _assetProvider, _progressService, _saveLoadService, paintObject);
             return paintRayGo;
         }
 
@@ -36,6 +43,8 @@ namespace Infrastructure.Factory
         {
             GameObject hudGo = _assetProvider.Instantiate(AssetAddress.HudPath);
             HUDController hud = hudGo.GetComponent<HUDController>();
+            hud.OnSavePainting += paintRay.SavePainting;
+            hud.OnLoadPainting += paintRay.LoadPainting;
             hud.OnCleanUpPainting += paintRay.CleanUpPainting;
             hud.OnBrushWidthUpdated += paintRay.UpdateBrushWidth;
             hud.OnBrushColorUpdated += paintRay.UpdateBrushColor;

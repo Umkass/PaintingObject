@@ -1414,7 +1414,7 @@ MonoBehaviour:
   _widthText: {fileID: 4048873695515144324}
   _widthImage: {fileID: 1222396713533627236}
   _widthSlider: {fileID: 5450616036930836889}
-  minWidthImageSize: 5
+  _minWidthImageSize: 5
 --- !u!1 &3979602385543227479
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,6 +1460,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8411dbfd3adb3604ea288246805ce923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _btnSavePainting: {fileID: 4712162690374448941}
+  _btnLoadPainting: {fileID: 3722050924410122248}
   _btnCleanUpPainting: {fileID: 8607883622396464731}
   _btnBrushWidth: {fileID: 8279708139709558281}
   _btnColor: {fileID: 3486072937288704032}

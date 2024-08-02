@@ -6,18 +6,24 @@ namespace UI.HUD
 {
     public class HUDController : MonoBehaviour
     {
+        [SerializeField] private Button _btnSavePainting;
+        [SerializeField] private Button _btnLoadPainting;
         [SerializeField] private Button _btnCleanUpPainting;
         [SerializeField] private Button _btnBrushWidth;
         [SerializeField] private Button _btnColor;
         [SerializeField] private GameObject _brushWidth;
         [SerializeField] private GameObject _colorPicker;
 
+        public event Action OnLoadPainting;
+        public event Action OnSavePainting;
         public event Action OnCleanUpPainting;
         public event Action<int> OnBrushWidthUpdated;
         public event Action<Color> OnBrushColorUpdated;
 
         private void Awake()
         {
+            _btnSavePainting.onClick.AddListener(SavePainting);
+            _btnLoadPainting.onClick.AddListener(LoadPainting);
             _btnCleanUpPainting.onClick.AddListener(CleanUpPainting);
             _btnBrushWidth.onClick.AddListener(ShowHideBrushWidth);
             _btnColor.onClick.AddListener(ShowHideColorPicker);
@@ -28,6 +34,12 @@ namespace UI.HUD
 
         public void UpdateBrushColor(Color color) =>
             OnBrushColorUpdated?.Invoke(color);
+
+        private void SavePainting() => 
+            OnSavePainting?.Invoke();
+
+        private void LoadPainting() => 
+            OnLoadPainting?.Invoke();
 
         private void CleanUpPainting() => 
             OnCleanUpPainting?.Invoke();

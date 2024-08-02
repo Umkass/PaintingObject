@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Data;
+using Data.PaintingData;
 using Infrastructure.Services.AssetManagement;
 using Infrastructure.Services.InputService;
+using Infrastructure.Services.Progress;
+using Infrastructure.Services.SaveLoad;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utils;
 
 namespace Logic
 {
@@ -21,12 +26,17 @@ namespace Logic
 
         private IInputService _inputService;
         private IAssetProvider _assetProvider;
+        private IProgressService _progressService;
+        private ISaveLoadService _saveLoadService;
         private GameObject _paintGo;
 
-        public void Construct(IInputService inputService, IAssetProvider assetProvider, GameObject paintGo)
+        public void Construct(IInputService inputService, IAssetProvider assetProvider,
+            IProgressService progressService, ISaveLoadService saveLoadService, GameObject paintGo)
         {
             _inputService = inputService;
             _assetProvider = assetProvider;
+            _progressService = progressService;
+            _saveLoadService = saveLoadService;
             _paintGo = paintGo;
         }
 
@@ -62,11 +72,50 @@ namespace Logic
             }
         }
 
-        public void UpdateBrushWidth(int width) =>
-            _currentWidth = width * Consts.BrushWidthCoefficient;
+        public void SavePainting()
+        {
+            PaintingData paintingData = new PaintingData();
 
-        public void UpdateBrushColor(Color color) =>
-            _currentColor = color;
+            foreach (var lineRenderer in _currentLineRenderers)
+            {
+                LineData lineData = new LineData
+                {
+                    positions = GetLinePositions(lineRenderer).Select(p => p.AsVectorData()).ToArray(),
+                    startColor = DataExtensions.ColorToFloatArray(lineRenderer.startColor),
+                    endColor = DataExtensions.ColorToFloatArray(lineRenderer.endColor),
+                    startWidth = lineRenderer.startWidth,
+                    endWidth = lineRenderer.endWidth,
+                    sortingOrder = lineRenderer.sortingOrder
+                };
+                paintingData.lines.Add(lineData);
+            }
+
+            _progressService.PaintingData = paintingData;
+            _saveLoadService.SavePaintingData();
+        }
+
+        public void LoadPainting()
+        {
+            PaintingData paintingData = _saveLoadService.LoadPaintingData();
+            _progressService.PaintingData = paintingData;
+
+            CleanUpPainting();
+
+            foreach (var lineData in paintingData.lines)
+            {
+                GameObject paintLineGo = _assetProvider.Instantiate(AssetAddress.PaintLinePath, _paintGo.transform, true);
+                LineRenderer lineRenderer = paintLineGo.GetComponent<LineRenderer>();
+                lineRenderer.positionCount = lineData.positions.Length;
+                lineRenderer.SetPositions(lineData.positions.Select(p => p.AsUnityVector()).ToArray());
+                lineRenderer.startColor = DataExtensions.FloatArrayToColor(lineData.startColor);
+                lineRenderer.endColor = DataExtensions.FloatArrayToColor(lineData.endColor);
+                lineRenderer.startWidth = lineData.startWidth;
+                lineRenderer.endWidth = lineData.endWidth;
+                lineRenderer.sortingOrder = lineData.sortingOrder;
+
+                _currentLineRenderers.Add(lineRenderer);
+            }
+        }
 
         public void CleanUpPainting()
         {
@@ -75,6 +124,12 @@ namespace Logic
 
             _currentLineRenderers.Clear();
         }
+
+        public void UpdateBrushWidth(int width) =>
+            _currentWidth = width * Consts.BrushWidthCoefficient;
+
+        public void UpdateBrushColor(Color color) =>
+            _currentColor = color;
 
         private void InitializeBrush()
         {
@@ -116,6 +171,13 @@ namespace Logic
         {
             _currentLine.positionCount = _currentPositions.Count;
             _currentLine.SetPositions(_currentPositions.ToArray());
+        }
+
+        private Vector3[] GetLinePositions(LineRenderer lineRenderer)
+        {
+            Vector3[] positions = new Vector3[lineRenderer.positionCount];
+            lineRenderer.GetPositions(positions);
+            return positions;
         }
     }
 }
