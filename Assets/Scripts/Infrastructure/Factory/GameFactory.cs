@@ -2,6 +2,7 @@
 using Infrastructure.Services.AssetManagement;
 using Infrastructure.Services.InputService;
 using Logic;
+using UI.HUD;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -23,16 +24,21 @@ namespace Infrastructure.Factory
             return paintGo;
         }
 
-        public GameObject CreatePaintRay(GameObject paintGo)
+        public GameObject CreatePaintRay(GameObject paintObject)
         {
             GameObject paintRayGo = _assetProvider.Instantiate(AssetAddress.PaintRayPath);
-            paintRayGo.GetComponent<PaintRay>().Construct(_inputService,_assetProvider, paintGo);
-            return paintGo;
+            PaintingBrushRay paintRay = paintRayGo.GetComponent<PaintingBrushRay>();
+            paintRay.Construct(_inputService, _assetProvider, paintObject);
+            return paintRayGo;
         }
 
-        public GameObject CreateHUD()
+        public GameObject CreateHUD(PaintingBrushRay paintRay)
         {
             GameObject hudGo = _assetProvider.Instantiate(AssetAddress.HudPath);
+            HUDController hud = hudGo.GetComponent<HUDController>();
+            hud.OnCleanUpPainting += paintRay.CleanUpPainting;
+            hud.OnBrushWidthUpdated += paintRay.UpdateBrushWidth;
+            hud.OnBrushColorUpdated += paintRay.UpdateBrushColor;
             return hudGo;
         }
     }

@@ -1,4 +1,5 @@
 using Infrastructure.Services;
+using Logic;
 using UnityEngine;
 
 namespace Infrastructure.Factory
@@ -7,6 +8,6 @@ namespace Infrastructure.Factory
     {
         public GameObject CreatePaintObject();
         public GameObject CreatePaintRay(GameObject paintGo);
-        public GameObject CreateHUD();
+        public GameObject CreateHUD(PaintingBrushRay paintRay);
     }
 }

@@ -1,5 +1,6 @@
 using Data;
 using Infrastructure.Factory;
+using Logic;
 using UI;
 using UnityEngine;
 
@@ -28,8 +29,8 @@ namespace Infrastructure.StateMachine
         {
             _loadingCurtain.Hide();
             GameObject paintGo = _gameFactory.CreatePaintObject();
-            _gameFactory.CreatePaintRay(paintGo);
-            _gameFactory.CreateHUD();
+            GameObject paintRayGo = _gameFactory.CreatePaintRay(paintGo);
+            _gameFactory.CreateHUD(paintRayGo.GetComponent<PaintingBrushRay>());
         }
 
         public void Exit()

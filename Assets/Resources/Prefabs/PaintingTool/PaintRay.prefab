@@ -44,5 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97b529689f849a29a03faa1fa03165b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetCoef: 0.01
-  _width: 0.02
+  _offsetCoef: 0.01
