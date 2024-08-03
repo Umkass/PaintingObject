@@ -38,7 +38,7 @@ namespace UI.HUD
             _widthImage.sizeDelta = new Vector2(newSize, newSize);
         }
 
-        private void UpdateWidthText(int width) => 
+        private void UpdateWidthText(int width) =>
             _widthText.text = width.ToString();
     }
 }

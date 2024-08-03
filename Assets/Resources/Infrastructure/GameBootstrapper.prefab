@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3585566782328276088}
   - component: {fileID: 8027371813814559189}
+  - component: {fileID: 6637357107281671679}
   m_Layer: 0
   m_Name: GameBootstrapper
   m_TagString: Untagged
@@ -45,3 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curtainPrefab: {fileID: 1428189639080946648, guid: 906cb28356a6747418fd4b0134ac2d35, type: 3}
+--- !u!114 &6637357107281671679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9151506582022467713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51129e7da4884629950e551b5f5a889c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

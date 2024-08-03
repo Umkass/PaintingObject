@@ -6,8 +6,8 @@ namespace Infrastructure.Factory
 {
     public interface IGameFactory : IService
     {
-        public GameObject CreatePaintObject();
-        public GameObject CreatePaintRay(GameObject paintGo);
-        public GameObject CreateHUD(PaintingBrushRay paintRay);
+        GameObject CreatePaintObject();
+        PaintingBrushRay CreatePaintBrushRay(GameObject paintGo);
+        void CreateHUD(PaintingBrushRay paintRay);
     }
 }

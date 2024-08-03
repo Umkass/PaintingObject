@@ -30,8 +30,8 @@ namespace Logic
         private ISaveLoadService _saveLoadService;
         private GameObject _paintGo;
 
-        public void Construct(IInputService inputService, IAssetProvider assetProvider,
-            IProgressService progressService, ISaveLoadService saveLoadService, GameObject paintGo)
+        public void Construct(IInputService inputService, IAssetProvider assetProvider, IProgressService progressService,
+            ISaveLoadService saveLoadService, GameObject paintGo)
         {
             _inputService = inputService;
             _assetProvider = assetProvider;
@@ -99,11 +99,12 @@ namespace Logic
             PaintingData paintingData = _saveLoadService.LoadPaintingData();
             _progressService.PaintingData = paintingData;
 
-            CleanUpPainting();
+            ClearPainting();
 
             foreach (var lineData in paintingData.lines)
             {
-                GameObject paintLineGo = _assetProvider.Instantiate(AssetAddress.PaintLinePath, _paintGo.transform, true);
+                GameObject paintLineGo =
+                    _assetProvider.Instantiate(AssetAddress.PaintLinePath, _paintGo.transform, true);
                 LineRenderer lineRenderer = paintLineGo.GetComponent<LineRenderer>();
                 lineRenderer.positionCount = lineData.positions.Length;
                 lineRenderer.SetPositions(lineData.positions.Select(p => p.AsUnityVector()).ToArray());
@@ -117,7 +118,7 @@ namespace Logic
             }
         }
 
-        public void CleanUpPainting()
+        public void ClearPainting()
         {
             foreach (var lineRenderer in _currentLineRenderers)
                 Destroy(lineRenderer.gameObject);

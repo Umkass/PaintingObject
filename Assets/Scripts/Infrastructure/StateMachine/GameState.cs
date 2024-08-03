@@ -25,16 +25,16 @@ namespace Infrastructure.StateMachine
             _sceneLoader.Load(SceneNames.Game, OnLoaded);
         }
 
+        public void Exit()
+        {
+        }
+
         private void OnLoaded()
         {
             _loadingCurtain.Hide();
             GameObject paintGo = _gameFactory.CreatePaintObject();
-            GameObject paintRayGo = _gameFactory.CreatePaintRay(paintGo);
-            _gameFactory.CreateHUD(paintRayGo.GetComponent<PaintingBrushRay>());
-        }
-
-        public void Exit()
-        {
+            PaintingBrushRay paintBrushRay = _gameFactory.CreatePaintBrushRay(paintGo);
+            _gameFactory.CreateHUD(paintBrushRay);
         }
     }
 }

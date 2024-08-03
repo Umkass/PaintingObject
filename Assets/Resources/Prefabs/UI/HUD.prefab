@@ -363,7 +363,7 @@ GameObject:
   - component: {fileID: 4839987483815061635}
   - component: {fileID: 8607883622396464731}
   m_Layer: 5
-  m_Name: btnCleanUpPainting
+  m_Name: btnClearPainting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1462,7 +1462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _btnSavePainting: {fileID: 4712162690374448941}
   _btnLoadPainting: {fileID: 3722050924410122248}
-  _btnCleanUpPainting: {fileID: 8607883622396464731}
+  _btnClearPainting: {fileID: 8607883622396464731}
   _btnBrushWidth: {fileID: 8279708139709558281}
   _btnColor: {fileID: 3486072937288704032}
   _brushWidth: {fileID: 3867223350418761688}

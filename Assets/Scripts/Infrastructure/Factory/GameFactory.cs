@@ -31,24 +31,23 @@ namespace Infrastructure.Factory
             return paintGo;
         }
 
-        public GameObject CreatePaintRay(GameObject paintObject)
+        public PaintingBrushRay CreatePaintBrushRay(GameObject paintObject)
         {
-            GameObject paintRayGo = _assetProvider.Instantiate(AssetAddress.PaintRayPath);
-            PaintingBrushRay paintRay = paintRayGo.GetComponent<PaintingBrushRay>();
-            paintRay.Construct(_inputService, _assetProvider, _progressService, _saveLoadService, paintObject);
-            return paintRayGo;
+            GameObject paintBrushRayGo = _assetProvider.Instantiate(AssetAddress.PaintBrushRayPath);
+            PaintingBrushRay paintBrushRay = paintBrushRayGo.GetComponent<PaintingBrushRay>();
+            paintBrushRay.Construct(_inputService, _assetProvider, _progressService, _saveLoadService, paintObject);
+            return paintBrushRay;
         }
 
-        public GameObject CreateHUD(PaintingBrushRay paintRay)
+        public void CreateHUD(PaintingBrushRay paintRay)
         {
             GameObject hudGo = _assetProvider.Instantiate(AssetAddress.HudPath);
             HUDController hud = hudGo.GetComponent<HUDController>();
             hud.OnSavePainting += paintRay.SavePainting;
             hud.OnLoadPainting += paintRay.LoadPainting;
-            hud.OnCleanUpPainting += paintRay.CleanUpPainting;
+            hud.OnClearPainting += paintRay.ClearPainting;
             hud.OnBrushWidthUpdated += paintRay.UpdateBrushWidth;
             hud.OnBrushColorUpdated += paintRay.UpdateBrushColor;
-            return hudGo;
         }
     }
 }

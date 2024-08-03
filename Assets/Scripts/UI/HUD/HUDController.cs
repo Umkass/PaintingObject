@@ -8,7 +8,7 @@ namespace UI.HUD
     {
         [SerializeField] private Button _btnSavePainting;
         [SerializeField] private Button _btnLoadPainting;
-        [SerializeField] private Button _btnCleanUpPainting;
+        [SerializeField] private Button _btnClearPainting;
         [SerializeField] private Button _btnBrushWidth;
         [SerializeField] private Button _btnColor;
         [SerializeField] private GameObject _brushWidth;
@@ -16,7 +16,7 @@ namespace UI.HUD
 
         public event Action OnLoadPainting;
         public event Action OnSavePainting;
-        public event Action OnCleanUpPainting;
+        public event Action OnClearPainting;
         public event Action<int> OnBrushWidthUpdated;
         public event Action<Color> OnBrushColorUpdated;
 
@@ -24,7 +24,7 @@ namespace UI.HUD
         {
             _btnSavePainting.onClick.AddListener(SavePainting);
             _btnLoadPainting.onClick.AddListener(LoadPainting);
-            _btnCleanUpPainting.onClick.AddListener(CleanUpPainting);
+            _btnClearPainting.onClick.AddListener(ClearPainting);
             _btnBrushWidth.onClick.AddListener(ShowHideBrushWidth);
             _btnColor.onClick.AddListener(ShowHideColorPicker);
         }
@@ -35,14 +35,14 @@ namespace UI.HUD
         public void UpdateBrushColor(Color color) =>
             OnBrushColorUpdated?.Invoke(color);
 
-        private void SavePainting() => 
+        private void SavePainting() =>
             OnSavePainting?.Invoke();
 
-        private void LoadPainting() => 
+        private void LoadPainting() =>
             OnLoadPainting?.Invoke();
 
-        private void CleanUpPainting() => 
-            OnCleanUpPainting?.Invoke();
+        private void ClearPainting() =>
+            OnClearPainting?.Invoke();
 
         private void ShowHideBrushWidth()
         {
